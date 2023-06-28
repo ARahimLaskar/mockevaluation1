@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Register</title>
+    <style>
+      nav {
+        display: flex;
+        background-color: blue;
+        height: 100px;
+      }
+
+      nav a {
+        display: flex;
+        gap: 20px;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        padding-left: 10px;
+        padding-right: 40px;
+        text-decoration: none;
+        font-size: 20px;
+      }
+
+      .form-container {
+        max-width: 400px;
+        margin: 20px auto;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        padding: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 10px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: bold;
+      }
+
+      .form-group input[type="text"],
+      .form-group input[type="number"],
+      .form-group select {
+        width: 95%;
+        padding: px;
+      }
+
+      .form-group .error-message {
+        color: red;
+      }
+
+      .form-group .radio-label {
+        margin-right: 10px;
+      }
+
+      .form-group .radio-label input[type="radio"] {
+        margin-right: 5px;
+      }
+
+      .form-group .radio-label:last-child {
+        margin-right: 0;
+      }
+
+      .register-btn {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        cursor: pointer;
+        width: 98%;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="./register.html">Registration Page</a>
+      <a href="./dashboard.html">Dashboard Page</a>
+      <a href="./vaccinated.html">Vaccinated Page</a>
+    </nav>
+
+    <div class="form-container">
+      <form id="registrationForm">
+        <div class="form-group">
+          <label for="uniqueId">Unique ID:</label>
+          <input
+            type="text"
+            id="uniqueId"
+            name="uniqueId"
+            placeholder="Enter uniqueId"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            minlength="4"
+            placeholder="Enter Name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <input
+            type="number"
+            id="age"
+            name="age"
+            min="18"
+            max="40"
+            placeholder="Enter Age"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Designation:</label>
+          <label class="radio-label">
+            <input type="radio" name="designation" value="Employee" required />
+            Employee
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="designation" value="Student" required />
+            Student
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label for="priority">Priority:</label>
+          <select id="priority" name="priority" required>
+            <option value="p0">p0 (Highest)</option>
+            <option value="p1">p1</option>
+            <option value="p2">p2</option>
+            <option value="p3">p3 (Lowest)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="vaccine">Vaccine:</label>
+          <select id="vaccine" name="vaccine" required>
+            <option value="Covishield">Covishield</option>
+            <option value="Covaxin">Covaxin</option>
+            <option value="Sputnik">Sputnik</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="register-btn">Register</button>
+        </div>
+      </form>
+    </div>
+  </body>
+  <script>
+    var registrationForm = document.getElementById("registrationForm");
+
+    registrationForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var uniqueId = document.getElementById("uniqueId").value;
+      var name = document.getElementById("name").value;
+      var age = document.getElementById("age").value;
+      var designation = document.getElementsByClassName("radio-label").value;
+      var priority = document.getElementById("priority").value;
+      var vaccine = document.getElementById("vaccine").value;
+
+      var formData = {
+        uniqueId: uniqueId,
+        name: name,
+        age: age,
+        designation: designation,
+        priority: priority,
+        vaccine: vaccine,
+      };
+
+      var users = JSON.parse(localStorage.getItem("users")) || [];
+
+      var existingUser = users.find(function (user) {
+        return user.uniqueId === uniqueId;
+      });
+
+      if (existingUser) {
+        alert("Please enter a different Unique ID. Unique ID already exists.");
+        return;
+      }
+
+      users.push(formData);
+
+      localStorage.setItem("users", JSON.stringify(users));
+
+      registrationForm.reset();
+
+      alert("Registration Successful");
+    });
+  </script>
+</html>

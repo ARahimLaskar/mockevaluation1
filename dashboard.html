@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Page</title>
+
+    <style>
+      nav {
+        display: flex;
+        background-color: blue;
+        height: 100px;
+      }
+
+      nav a {
+        display: flex;
+        gap: 20px;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        padding-left: 10px;
+        padding-right: 40px;
+        text-decoration: none;
+        font-size: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        width: 200px;
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .delete-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      .vaccinate-btn {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="./register.html">Registration Page</a>
+      <a href="./dashboard.html">Dashboard Page</a>
+      <a href="./vaccinated.html">Vaccinated Page</a>
+    </nav>
+    <div>
+      <h1>All Register Users</h1>
+      <table>
+        <tr>
+          <th>Unique ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Designation</th>
+          <th>Priority</th>
+          <th>Vaccine</th>
+          <th>OTP</th>
+          <th>Actions</th>
+        </tr>
+        <table id="usersTable"></table>
+      </table>
+    </div>
+  </body>
+
+  <script>
+    var registerUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+    function showUsers() {
+      var tableData = document.getElementById("usersTable");
+      tableData.innerHTML = "";
+      registerUsers?.map((e) => {
+        console.log(registerUsers);
+
+        var row = tableData.insertRow();
+        var uniqueId = row.insertCell();
+        uniqueId.innerHTML = e.uniqueId;
+
+        var name = row.insertCell();
+        name.innerHTML = e.name;
+
+        var age = row.insertCell();
+        age.innerHTML = e.age;
+
+        var designation = row.insertCell();
+        designation.innerHTML = e.designation;
+
+        var priority = row.insertCell();
+        priority.innerHTML = e.priority;
+
+        var vaccine = row.insertCell();
+        vaccine.innerHTML = e.vaccine;
+
+        var otpCell = row.insertCell();
+        var otp = generateOTP();
+        otpCell.innerHTML = otp;
+
+        var actionsCell = row.insertCell();
+        var deleteButton = document.createElement("BUTTON");
+        deleteButton.innerHTML = "Delete";
+        deleteButton.className = "delete-btn";
+        actionsCell.append(deleteButton);
+        deleteButton.onclick = handleDelete(e);
+
+        var vaccinateButton = document.createElement("BUTTON");
+        vaccinateButton.innerHTML = "Vaccinate";
+        vaccinateButton.className = "vaccinate-btn";
+        actionsCell.append(vaccinateButton);
+        vaccinateButton.onclick = handleVaccinate(e, otp);
+      });
+    }
+
+    //generating otp
+    function generateOTP() {
+      return Math.floor(1000 + Math.random() * 9000);
+    }
+
+    // deleting the item onclick
+    function handleDelete(e) {
+      return function () {
+        registerUsers.splice(e, 1);
+
+        localStorage.setItem("users", JSON.stringify(registerUsers));
+
+        showUsers();
+      };
+    }
+
+    function handleVaccinate(e, otp) {
+      return function () {
+        var enterOTP = prompt("Enter OTP:");
+        if (enterOTP === otp) {
+          alert(registerUsers(e).name + "Added to Queue");
+
+          setTimeout(function () {
+            alert("Vaccinating" + registerUsers(e).vaccine);
+          }, 5000);
+
+          setTimeout(function () {
+            alert(registerUsers(e).name + "Vaccinated ");
+            var vaccinatedUsers =
+              JSON.parse(localStorage.getItem("vaccinated")) || [];
+            vaccinatedUsers.push(registerUsers(e));
+            localStorage.setItem("vaccinated", JSON.stringify(vaccinatedUsers));
+            registerUsers.splice(e, 1);
+            localStorage.setItem("users", JSON.stringify(registerUsers));
+            showUsers();
+          }, 10000);
+        } else {
+          alert("Invalid OTP, Please Enter Correct OTP");
+        }
+      };
+    }
+
+    window.onload = showUsers();
+  </script>
+</html>

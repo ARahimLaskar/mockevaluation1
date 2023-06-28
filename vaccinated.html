@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vaccinated</title>
+    <style>
+      nav {
+        display: flex;
+        background-color: blue;
+        height: 100px;
+      }
+
+      nav a {
+        display: flex;
+        gap: 20px;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        padding-left: 10px;
+        padding-right: 40px;
+        text-decoration: none;
+        font-size: 20px;
+      }
+
+      table {
+        width: 200px;
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .delete-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="./register.html">Registration Page</a>
+      <a href="./dashboard.html">Dashboard Page</a>
+      <a href="./vaccinated.html">Vaccinated Page</a>
+    </nav>
+
+    <div>
+      <h1>Vaccinated Users</h1>
+
+      <table id="vaccinatedTable">
+        <tr>
+          <th>Unique ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Designation</th>
+          <th>Priority</th>
+          <th>Vaccine</th>
+          <th>Actions</th>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
